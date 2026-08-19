@@ -38,6 +38,12 @@ jobs:
       - name: run Trivy
         run: trivy fs . --format sarif --output trivy_test.sarif || true
 
-
+      - name: Upload output files
+        uses: actions/upload-artifact@v4
+        with:
+          name: secury-tests
+          path: |
+            bandit_test.json
+            trivy_test.sarif
 
     

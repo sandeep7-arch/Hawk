@@ -7,9 +7,37 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
       - uses: actions/checkout@v4
-      - name: test
-        run: |
-          echo "Hello from security checker!!"
-          # this is my security scanner
 
+      - name: Set up Pyhton
+      - actions: actions/setup-python@v5
+      - with: 
+          python-version: "3.12"
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Install trivy
+        run: | 
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
+            | gpg --dearmor \
+            | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
+            | sudo tee /etc/apt/sources.list.d/trivy.list
+
+          sudo apt-get update
+          sudo apt-get install -y trivy
+          
+      - name: run Bandit
+        run: bandit -r . -f json -o bandit_test.json || true
+
+      - name: run Trivy
+        run: trivy fs . --format sarif --output trivy_test.sarif || true
+
+
+
+    

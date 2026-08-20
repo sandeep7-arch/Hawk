@@ -1,6 +1,6 @@
 package main
 
-import  ("fmt" ; "os")
+import  ("fmt" ; "os" ; "github.com/sandeep7-arch/Hawk/internal/scanner")
 
 func main() {
 	fmt.Println("Hawk Security Scanner")
@@ -17,15 +17,15 @@ func main() {
 		return
 	}
 	fmt.Println("Scanning:" , target)
-	entries , err := os.ReadDir(target)
-	if err!=nil {
+	Files , err := scanner.ScanDir(target)
+	if err!=nil	{
 		fmt.Println("Error:" , err)
 		return
 	}
 	fmt.Println("\nFiles:")
 
-	for _, entry := range entries {
-		fmt.Println(" " , entry.Name())
+	for _, entry := range Files {
+		fmt.Println(" " , entry)
 	}
 
 }

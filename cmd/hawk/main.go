@@ -1,6 +1,6 @@
 package main
 
-import  ("fmt" ; "os" ; "github.com/sandeep7-arch/Hawk/internal/scanner")
+import  ("fmt" ; "os" ; "github.com/sandeep7-arch/Hawk/internal/scanner" ; "github.com/sandeep7-arch/Hawk/internal/detector")
 
 func main() {
 	fmt.Println("Hawk Security Scanner")

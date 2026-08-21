@@ -22,6 +22,12 @@ func main() {
 		fmt.Println("Error:" , err)
 		return
 	}
+	Pyfile := detector.DetectPy(target)
+	if Pyfile {
+		fmt.Println("Python Project Found")
+	}	else {
+		fmt.Println("NO Python code detected")
+	}
 	fmt.Println("\nFiles:")
 
 	for _, entry := range Files {

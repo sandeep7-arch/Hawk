@@ -26,7 +26,7 @@ func main() {
 	if Pyfile {
 		fmt.Println("Python Project Found")
 		fmt.Println("Bandit is Being run")
-		output , err := runner.runBandit(target)
+		output , err := runner.RunBandit(target)
 		if err!=nil {
 			fmt.Println("Bandit Error:", err)
 			return

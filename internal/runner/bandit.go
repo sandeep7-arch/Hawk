@@ -2,7 +2,7 @@ package runner
 
 import "os/exec"
 
-func runBandit(path string)([]byte , error) {
+func RunBandit(path string)([]byte , error) {
 	cmd := exec.Command(
 		"Bandit",
 		"-r",

@@ -1,6 +1,6 @@
 package main
 
-import  ("fmt" ; "os" ; "github.com/sandeep7-arch/Hawk/internal/scanner" ; "github.com/sandeep7-arch/Hawk/internal/detector")
+import  ("fmt" ; "os" ; "github.com/sandeep7-arch/Hawk/internal/scanner" ; "github.com/sandeep7-arch/Hawk/internal/detector" ; "github.com/sandeep7-arch/Hawk/internal/runner")
 
 func main() {
 	fmt.Println("Hawk Security Scanner")
@@ -25,6 +25,13 @@ func main() {
 	Pyfile := detector.DetectPy(target)
 	if Pyfile {
 		fmt.Println("Python Project Found")
+		fmt.Println("Bandit is Being run")
+		output , err := runner.runBandit(target)
+		if err!=nil {
+			fmt.Println("Bandit Error:", err)
+			return
+		}
+		fmt.Println(string(output))
 	}	else {
 		fmt.Println("NO Python code detected")
 	}

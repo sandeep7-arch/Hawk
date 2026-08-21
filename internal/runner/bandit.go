@@ -4,7 +4,7 @@ import "os/exec"
 
 func RunBandit(path string)([]byte , error) {
 	cmd := exec.Command(
-		"Bandit",
+		"bandit",
 		"-r",
 		path,
 		"-f",

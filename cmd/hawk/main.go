@@ -22,19 +22,21 @@ func main() {
 		fmt.Println("Error:" , err)
 		return
 	}
+
+
+
 	Pyfile := detector.DetectPy(target)
 	if Pyfile {
 		fmt.Println("Python Project Found")
 		fmt.Println("Bandit is Being run")
-		output , err := runner.RunBandit(target)
+		output_bandit , err := runner.RunBandit(target)
 		if err!=nil {
 			fmt.Println("Bandit Found security Issues")
 		}
-		report , err2 := parser.Parser(output)
+		report , err2 := parser.Parser(output_bandit)
 		if err2 != nil {
 			fmt.Println("Bandit Parsing Error:" , err2)
 		}
-		fmt.Println("Bandit Findings:" , len(report.Results))
 		scanResult:=model.ScanResult{}
 		for _, result := range report.Results {
 		finding := parser.ConvBanditResult(result)
@@ -55,6 +57,23 @@ func main() {
 	}	else {
 		fmt.Println("NO Python code detected")
 	}
+
+
+
+
+	fmt.Println()
+	fmt.Println("Trivy is being run")
+
+	output_trivy , err := runner.RunTrivy(target)
+
+	if err!=nil {
+		fmt.Println("Trivy Found issues")
+	}
+
+
+
+
+
 	fmt.Println("\nFiles:")
 
 	for _, entry := range Files {

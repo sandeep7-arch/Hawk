@@ -1,6 +1,6 @@
 package parser
 
-import "encoding/json"
+import ("encoding/json"; "github.com/sandeep7-arch/Hawk/internal/model")
 
 type BanditReport struct {
 	Results []BanditResult `json:"Results"`
@@ -24,4 +24,17 @@ func Parser(data []byte)(BanditReport , error) {
 		return BanditReport{} , err
 	}
 	return report , nil
+}
+
+func ConvBanditResult(result BanditResult)(model.Finding) {
+	return model.Finding{
+			Scanner:    "Bandit",
+			RuleID:     result.TestID,
+			RuleName:   result.TestName,
+			Severity:   result.Severity,
+			Confidence: result.Confidence,
+			Message:    result.IssueText,
+			File:       result.Filename,
+			Line:       result.LineNumber,
+		}
 }

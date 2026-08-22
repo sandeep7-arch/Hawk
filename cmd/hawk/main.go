@@ -37,13 +37,16 @@ func main() {
 		}
 		fmt.Println("Bandit Findings:" , len(report.Results))
 		for _, result := range report.Results {
+		finding := parser.ConvBanditResult(result)
+
 			fmt.Println()
-			fmt.Println("Rule:", result.TestID)
-			fmt.Println("Severity:", result.Severity)
-			fmt.Println("Confidence:", result.Confidence)
-			fmt.Println("File:", result.Filename)
-			fmt.Println("Line:", result.LineNumber)
-			fmt.Println("Message:", result.IssueText)
+			fmt.Println("Scanner:", finding.Scanner)
+			fmt.Println("Rule:", finding.RuleID)
+			fmt.Println("Severity:", finding.Severity)
+			fmt.Println("Confidence:", finding.Confidence)
+			fmt.Println("File:", finding.File)
+			fmt.Println("Line:", finding.Line)
+			fmt.Println("Message:", finding.Message)
 		}
 	}	else {
 		fmt.Println("NO Python code detected")

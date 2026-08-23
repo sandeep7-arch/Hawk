@@ -81,8 +81,17 @@ func ConvTrivyResult(result TrivyResult , rule TrivyRule) (model.Finding) {
 		Scanner: "Trivy",
 		RuleID: result.RuleID,
 		RuleName: rule.Name,
-		Severity: rule.Properties.SecuritySeverity,
 		Message: result.Message.Text,
+	}
+		if rule.Properties.CVSSBaseScore <= 3.9 {
+		finding.Severity = "LOW"		
+	} 	else if rule.Properties.CVSSBaseScore <=6.9 {
+		finding.Severity = "MEDIUM"
+
+	} 	else if rule.Properties.CVSSBaseScore <= 8.9 {
+		finding.Severity = "HIGH"
+	}   else {
+		finding.Severity = "CRITICAL"
 	}
 		if len(result.Locations) > 0 {
 			finding.File = result.Locations[0].PhysicalLocation.ArtifactLocation.URI

@@ -25,6 +25,7 @@ func main() {
 
 
 
+	scanResult:=model.ScanResult{}
 	Pyfile := detector.DetectPy(target)
 	if Pyfile {
 		fmt.Println("Python Project Found")
@@ -33,28 +34,16 @@ func main() {
 		if err!=nil {
 			fmt.Println("Bandit Found security Issues")
 		}
-		report , err2 := parser.Parser(output_bandit)
+		bandit_report , err2 := parser.Parser(output_bandit)
 		if err2 != nil {
 			fmt.Println("Bandit Parsing Error:" , err2)
 		}
-		scanResult:=model.ScanResult{}
-		for _, result := range report.Results {
+
+		for _, result := range bandit_report.Results {
 		finding := parser.ConvBanditResult(result)
 		scanResult.Findings = append(scanResult.Findings , finding)
 		}
-		fmt.Println("Bandit Findings:", len(scanResult.Findings))
-
-		for _, finding := range scanResult.Findings {
-			fmt.Println()
-			fmt.Println("Scanner:", finding.Scanner)
-			fmt.Println("Rule:", finding.RuleID)
-			fmt.Println("Severity:", finding.Severity)
-			fmt.Println("Confidence:", finding.Confidence)
-			fmt.Println("File:", finding.File)
-			fmt.Println("Line:", finding.Line)
-			fmt.Println("Message:", finding.Message)
-		}		
-	}	else {
+			}	else {
 		fmt.Println("NO Python code detected")
 	}
 
@@ -64,15 +53,48 @@ func main() {
 	fmt.Println()
 	fmt.Println("Trivy is being run")
 
-	output_trivy , err := runner.RunTrivy(target)
+	output_trivy , err3 := runner.RunTrivy(target)
 
-	if err!=nil {
-		fmt.Println("Trivy Found issues")
+	if err3!= nil {
+		fmt.Println("Trivy Found Security Issues")
+	}
+	
+	trivy_report , err4:= parser.TrivyParser(output_trivy)
+	if err4 != nil {
+		fmt.Println("Trivy Parsing Error:" , err4)
 	}
 
+	for _, run := range trivy_report.Runs {
 
+    for _, result := range run.Results {
 
+        for _, rule := range run.Tool.Driver.Rules {
 
+            if rule.ID == result.RuleID {
+
+                finding := parser.ConvTrivyResult(result, rule)
+
+                scanResult.Findings = append(
+                    scanResult.Findings,
+                    finding,
+                )
+                break
+            }
+        }
+    }
+}
+	fmt.Println("Findings Of Bandit and Trivy") 
+	for _, finding := range scanResult.Findings {
+				fmt.Println()
+				fmt.Println("Scanner:", finding.Scanner)
+				fmt.Println("Rule:", finding.RuleID)
+				fmt.Println("Severity:", finding.Severity)
+				fmt.Println("Confidence:", finding.Confidence)
+				fmt.Println("File:", finding.File)
+				fmt.Println("Line:", finding.Line)
+				fmt.Println("Message:", finding.Message)
+				fmt.Println()
+			}		
 
 	fmt.Println("\nFiles:")
 

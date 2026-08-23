@@ -10,40 +10,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Pyhton
-        uses: actions/setup-python@v5
+      - name: Set up Hawk 
+        uses: actions/setup-go@v5
         with: 
-          python-version: "3.12"
+          go-version: "1.24"
 
-      - name: Install Bandit
-        run: pip install bandit
+      - name: Build Hawk 
+        run: go build -o hawk ./cmd/hawk
 
-      - name: Install trivy
-        run: | 
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
-            | gpg --dearmor \
-            | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
-            | sudo tee /etc/apt/sources.list.d/trivy.list
-
-          sudo apt-get update
-          sudo apt-get install -y trivy
-          
-      - name: run Bandit
-        run: bandit -r . -f json -o bandit_test.json || true
-
-      - name: run Trivy
-        run: trivy fs . --format sarif --output trivy_test.sarif || true
-
-      - name: Upload output files
-        uses: actions/upload-artifact@v4
-        with:
-          name: secury-tests
-          path: |
-            bandit_test.json
-            trivy_test.sarif
-
-    
+      

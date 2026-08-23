@@ -18,4 +18,5 @@ jobs:
       - name: Build Hawk 
         run: go build -o hawk ./cmd/hawk
 
-      
+      - name: Run Hawk
+        run: go run hawk scan .

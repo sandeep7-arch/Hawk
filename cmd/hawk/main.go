@@ -38,6 +38,7 @@ func main() {
 		banditreport , err2 := parser.Parser(outputbandit)
 		if err2 != nil {
 			fmt.Println("Bandit Parsing Error:" , err2)
+			os.Exit(1)
 		}
 
 		for _, result := range banditreport.Results {
@@ -63,6 +64,7 @@ func main() {
 	trivyreport , err4:= parser.TrivyParser(outputtrivy)
 	if err4 != nil {
 		fmt.Println("Trivy Parsing Error:" , err4)
+		os.Exit(1)
 	}
 
 	for _, run := range trivyreport.Runs {

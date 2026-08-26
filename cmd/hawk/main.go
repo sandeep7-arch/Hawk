@@ -35,7 +35,7 @@ func main() {
 		if err!=nil {
 			fmt.Println("Bandit Found security Issues")
 		}
-		banditreport , err2 := parser.Parser(outputbandit)
+		banditreport , err2 := parser.BanditParser(outputbandit)
 		if err2 != nil {
 			fmt.Println("Bandit Parsing Error:" , err2)
 			os.Exit(1)

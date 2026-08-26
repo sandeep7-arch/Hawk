@@ -2,7 +2,7 @@ package runner
 
 import "os/exec"
 
-func RunTrivy(path string) ([]byte , error) {
+func RunTrivyDependency(path string) ([]byte , error) {
 	cmd := exec.Command(
 		"trivy",
 		"fs",
@@ -11,4 +11,11 @@ func RunTrivy(path string) ([]byte , error) {
 		"sarif",
 		)
 	return cmd.Output()
+}
+
+func RunTrivyDocker(path String) ([]byte , error) {
+	cmd := exec.Command(
+		"trivy",
+		
+		)
 }

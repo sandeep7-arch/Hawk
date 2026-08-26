@@ -17,7 +17,7 @@ type BanditResult struct {
 	LineRange  []int  `json:"line_range"`
 }
 
-func Parser(data []byte)(BanditReport , error) {
+func BanditParser(data []byte)(BanditReport , error) {
 	var report BanditReport
 	err:= json.Unmarshal(data , &report)
 	if err!= nil {
